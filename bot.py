@@ -39,7 +39,7 @@ class Bot(discord.Client):
     embed.timestamp = datetime.datetime.utcnow()
 
     #channel = discord.utils.get(server.channels, name="bot_commands", type="ChannelType.text")
-    channel = bot.get_channel(id=YourChannelIDHere)
+    channel = bot.get_channel(id=718134763051024394)
     await channel.send(embed=embed)
 
   async def on_message(self, message):
@@ -59,6 +59,105 @@ class Bot(discord.Client):
     if (message.content.startswith("!greet")):
       embed = discord.Embed(colour=0xffa500, title="Hello "+message.content.split(' ')[1]+" 👋")
       await message.channel.send(embed = embed)
+
+    if (message.content.startswith("!book")):
+      
+      try:
+         s = ' '.join(message.content.split(' ')[1:])
+         doc = req.get("https://www.goodreads.com/search?q=" + s.replace(' ','+') + "&search%5Bsource%5D=goodreads&search_type=books&tab=books")
+         soup = bs(doc.text, features="html.parser")
+         dd = soup.find_all("div",{"class":"mainContent"})[0].find_all("table",{"cellspacing":"0"})[0].find_all("tr")[0].find_all("a",{"class":"bookTitle"})[0]
+         link = ''.join(re.findall('href="(.+)" i',str(dd)))
+         print("https://www.goodreads.com"+link)
+         doc = req.get("https://www.goodreads.com"+link)
+         soup = bs(doc.text, features="html.parser")
+         dd = soup.find_all("div",{"class":"mainContent"})[0].find_all("div",{"id":"topcol"})[0]
+      except:
+         print('cannot find input')
+         embed = discord.Embed(colour=0xff0000, description="Error: cannot find book")
+         await message.channel.send(embed = embed)
+         return
+      
+      try:
+         title = dd.find_all("div",{"class":"last col"})[0].find_all("h1",{"id":"bookTitle"})[0].text.replace('\n','')
+         print("Title :"+title)
+      except:
+         title = ' '.join(message.content.split(' ')[1:])
+         print('cannot find title')
+
+      try:
+         cover = dd.find_all("a")[0].find_all("img",{"id":"coverImage"})[0]
+         coverUrl = ''.join(re.findall('src="(.+)"',str(cover)))
+         print("coverUrl :"+coverUrl)
+      except:
+         coverUrl = ''
+         print('cannot find coverUrl')
+     
+      try:
+         serie = dd.find_all("div",{"class":"last col"})[0].find_all("h2")[0].find_all("a")[0].text.replace('\n','')
+         print("Book Series :"+serie)
+      except:
+         serie = 'N\A'
+         print('cannot find serie')
+
+      try:
+         desc = dd.find_all("div",{"class":"last col"})[0].find_all("div",{"id":"description"})[0].find_all("span")[0].text
+         print("Book Description :"+desc)
+      except:
+         desc = 'N\A'
+         print('cannot find desc')
+
+      try:
+         author = dd.find_all("div",{"class":"last col"})[0].find_all("a",{"class":"authorName"})[0].find_all("span",{"itemprop":"name"})[0].text
+         print("Book Author :"+author)
+      except:
+         author = 'N\A'
+         print('cannot find author')
+
+      try:
+         rating = dd.find_all("div",{"class":"last col"})[0].find_all("span",{"itemprop":"ratingValue"})[0].text.replace('\n','')
+         print("Rating :"+rating)
+      except:
+         rating = 'N\A'
+         print('cannot find rating')
+
+
+      try:
+         num = dd.find_all("div",{"class":"last col"})[0].find_all("div",{"id":"details"})[0].find_all("span",{"itemprop":"numberOfPages"})[0].text
+         print("Number of Pages :"+num)
+      except:
+         num = 'N\A'
+         print('cannot find num')
+
+
+      try:
+         pub = dd.find_all("div",{"class":"last col"})[0].find_all("div",{"id":"details"})[0].find_all("div",{"class":"row"})[1].text.replace('\n','')
+         print("Publication :"+pub)
+      except:
+         pub = 'N\A'
+         print('cannot find pub')
+    
+      try:
+         b = dd.find_all("div",{"class":"last col"})[0].find_all("div",{"id":"details"})[0].find_all("div",{"class":"buttons"})[0].find_all("div",{"class":"infoBoxRowTitle"})
+         p = dd.find_all("div",{"class":"last col"})[0].find_all("div",{"id":"details"})[0].find_all("div",{"class":"buttons"})[0].find_all("div",{"class":"infoBoxRowItem"})
+         f =[[b[i].text,p[i].text.replace('\n','')] for i in range(len(b)) if b[i].text !='']
+         f = f[:len(f)-1]
+         details = ''
+         for i in f:
+            details +="**"+i[0]+" :** "+i[1]+"\n" 
+            print(i[0]+" :"+i[1])
+      except:
+         details = ''
+         print('cannot find details')
+      
+      
+      color = self.random_color()
+      description ="**Title :** "+title+"\n"+"**Author :** "+author+"\n"+"**Book Series :** "+serie+"\n"+"**Rating :** "+rating+"\n"+"**Published :** "+pub+"\n"+"**Number Of Pages :** "+num+"\n"+details+"**Book Description :** "+desc+"\n"+"https://www.goodreads.com"+link
+      embed = self.create_embed(title,description,color,coverUrl)
+      
+      await message.channel.send(embed = embed)
+            
+
 
     if (message.content.startswith("!good night")):
       
@@ -82,7 +181,7 @@ class Bot(discord.Client):
       await message.channel.send(embed = embed)
 
     if (message.content.startswith("!help")):
-      embed = discord.Embed(colour=0x6e6fad, title= "Anii Help", description="❕ Type *!dm* : So I can send you a private message ! \n❕ Type *!greet* : To recieve Anii76's greetings ! \n❕ Type *!movie* : So I can find your favourite movie/serie 🎬 ! \n❕ Type *!anime* : So I can find your favourite anime !\n❕ Type *!corona* : To display corona news ! \n❕ Type *!good night* : To recieve nighty quotes ! \n❕ Type *!help* : To display this message ! ☺️ \n")
+      embed = discord.Embed(colour=0x6e6fad, title= "Anii Help", description="❕ Type ***!dm*** : So I can send you a private message ! \n❕ Type ***!greet*** : To recieve Anii76's greetings ! \n❕ Type ***!book*** : So I can find your favourite book 📚 !\n❕ Type ***!movie*** : So I can find your favourite movie/serie 🎬 ! \n❕ Type ***!anime*** : So I can find your favourite anime !\n❕ Type ***!corona*** : To display corona news ! \n❕ Type ***!good night*** : To recieve nighty quotes ! \n❕ Type ***!help*** : To display this message ! ☺️ \n")
       await message.channel.send(embed = embed)
 
     if (message.content.startswith("!dm")):
@@ -96,7 +195,7 @@ class Bot(discord.Client):
               embed = discord.Embed(colour=0x95efcc, title="Azul "+str(member)+" 👋")
               await member.send(embed = embed)
             except discord.Forbidden:
-              embed = discord.Embed(colour=0xff0000, description="Error: user "+ name +" dosen't accept private messages")
+              embed = discord.Embed(colour=0xff0000, description="**Error: user "+ name +" dosen't accept private messages**")
               await message.channel.send(embed = embed)
       else:
         member = discord.utils.get(message.guild.members, name=name)
@@ -104,10 +203,10 @@ class Bot(discord.Client):
            embed = discord.Embed(colour=0x95efcc, title="Azul "+name+" 👋")
            await member.send(embed = embed)
         except discord.Forbidden:
-           embed = discord.Embed(colour=0xff0000, description="Error: user "+ name +" dosen't accept private messages")
+           embed = discord.Embed(colour=0xff0000, description="**Error: user "+ name +" dosen't accept private messages**")
            await message.channel.send(embed = embed)
         except AttributeError:
-           embed = discord.Embed(colour=0xff0000, description="Error: member "+name+" not found ")
+           embed = discord.Embed(colour=0xff0000, description="**Error: member "+name+" not found**")
            await message.channel.send(embed = embed)
 
     if (message.content.startswith("!movie") or message.content.startswith("!anime")):
@@ -123,12 +222,12 @@ class Bot(discord.Client):
             doc = req.get("https://www.imdb.com"+link)
             soup = bs(doc.text, features="html.parser")
          else:
-            embed = discord.Embed(colour=0xff0000, description="Error: cannot find movie")
+            embed = discord.Embed(colour=0xff0000, description="**Error: cannot find movie**")
             await message.channel.send(embed = embed)
             return
       except:
          print('cannot find input')
-         embed = discord.Embed(colour=0xff0000, description="Error: cannot find movie")
+         embed = discord.Embed(colour=0xff0000, description="**Error: cannot find movie**")
          await message.channel.send(embed = embed)
          return
 
@@ -191,7 +290,7 @@ class Bot(discord.Client):
          print('cannot find plot')
       
       color = self.random_color()
-      description ="Title :"+title+"\n"+"Rating :"+rating+"\n"+"Duration :"+duration+"\n"+"Geners :"+geners+"\n"+"Release :"+release+"\n"+"Episode Guide :"+ep+"\n"+"Plot :"+plot+"\n"+"https://www.imdb.com"+link
+      description ="**Title :** "+title+"\n"+"**Rating :** "+rating+"\n"+"**Duration :** "+duration+"\n"+"**Geners :** "+geners+"\n"+"**Release :** "+release+"\n"+"**Episode Guide :** "+ep+"\n"+"**Plot :** "+plot+"\n"+"https://www.imdb.com"+link
       embed = self.create_embed(title,description,color,img)
       
       await message.channel.send(embed = embed)      
@@ -200,4 +299,4 @@ class Bot(discord.Client):
 
 if __name__ == "__main__":
   bot = Bot()
-  bot.run("YourTokenIDHere")
+  bot.run(" NzE3NzM4NzQ0NzUyNTA0OTIy.XtetHA.-ewwe6SP0QB8UHBoho-1x5mITdQ")
