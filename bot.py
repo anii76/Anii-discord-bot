@@ -39,7 +39,7 @@ class Bot(discord.Client):
     embed.timestamp = datetime.datetime.utcnow()
 
     #channel = discord.utils.get(server.channels, name="bot_commands", type="ChannelType.text")
-    channel = bot.get_channel(id=718134763051024394)
+    channel = bot.get_channel(id=YourChannelIDHere)
     await channel.send(embed=embed)
 
   async def on_message(self, message):
@@ -299,4 +299,4 @@ class Bot(discord.Client):
 
 if __name__ == "__main__":
   bot = Bot()
-  bot.run(" NzE3NzM4NzQ0NzUyNTA0OTIy.XtetHA.-ewwe6SP0QB8UHBoho-1x5mITdQ")
+  bot.run("YourTokenIDHere")
