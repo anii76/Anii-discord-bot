@@ -192,18 +192,18 @@ class Bot(discord.Client):
         for member in message.guild.members:
          if member != self.user :
             try:
-              embed = discord.Embed(colour=0x95efcc, title="Azul "+str(member)+" 👋")
+              embed = discord.Embed(colour=0x95efcc, title="Hello "+str(member)+" 👋")
               await member.send(embed = embed)
             except discord.Forbidden:
-              embed = discord.Embed(colour=0xff0000, description="**Error: user "+ name +" dosen't accept private messages**")
+              embed = discord.Embed(colour=0xff0000, description="**Error: user "+ name +" doesn't accept private messages**")
               await message.channel.send(embed = embed)
       else:
         member = discord.utils.get(message.guild.members, name=name)
         try:
-           embed = discord.Embed(colour=0x95efcc, title="Azul "+name+" 👋")
+           embed = discord.Embed(colour=0x95efcc, title="Hello "+name+" 👋")
            await member.send(embed = embed)
         except discord.Forbidden:
-           embed = discord.Embed(colour=0xff0000, description="**Error: user "+ name +" dosen't accept private messages**")
+           embed = discord.Embed(colour=0xff0000, description="**Error: user "+ name +" doesn't accept private messages**")
            await message.channel.send(embed = embed)
         except AttributeError:
            embed = discord.Embed(colour=0xff0000, description="**Error: member "+name+" not found**")
