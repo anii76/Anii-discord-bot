@@ -299,4 +299,4 @@ class Bot(discord.Client):
 
 if __name__ == "__main__":
   bot = Bot()
-  bot.run("YourTokenIDHere")
+  bot.run("YourTokenHere")
