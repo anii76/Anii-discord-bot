@@ -19,7 +19,7 @@ Greet users and send them private messages, Give random quotes, and more !
 
 ### How to install/use it:
 These instruction will get you a copy of this project up running on your local machine .
-*(You should have python installed on your computer, if you don't get it from [here](https://www.python.org/downloads/)*
+*(You should have python installed on your computer, if you don't, get it from [here](https://www.python.org/downloads/))*
 
 * #### Create a server :
   If you don't already have a server, create one free one [here](https://discordapp.com). Simply log in, and then click the plus sign on the left side of the main window to create a new server.
@@ -33,14 +33,14 @@ These instruction will get you a copy of this project up running on your local m
   Run `python -m pip install discord.py`
 *  Copy token and paste it in "*YourTekenHere*" in `bot.py`
 *  Copy your channel id and paste it in "*YourChannelIDHere*" in `bot.py`
-*  Run bot.py
+*  Run `bot.py`
 *  Enjoy !
 
 
 ### Tools :
 
 * Discord API (*discord.py*)
-* Web Scraping with *BeautifulSoup*: 
+* Web Scraping with *BeautifulSoup* : 
   * [Imdb](https://www.imdb.com) for movies/anime
   * [Goodreads](https://www.goodreads.com) for books
   * [Good Night Quotes](https://www.luvze.com/good-night-quotes/) for quotes
