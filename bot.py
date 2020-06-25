@@ -57,7 +57,7 @@ class Bot(discord.Client):
       await message.channel.send("https://ncov2019.live/")
 
     if (message.content.startswith("!greet")):
-      embed = discord.Embed(colour=0xffa500, title="Hello "+message.content.split(' ')[1]+" 👋")
+      embed = discord.Embed(colour=0xffa500, title="Hello "+' '.join(message.content.split(' ')[1:])+" 👋")
       await message.channel.send(embed = embed)
 
     if (message.content.startswith("!book")):
@@ -186,7 +186,7 @@ class Bot(discord.Client):
 
     if (message.content.startswith("!dm")):
 
-      name = message.content.split(' ')[1]
+      name = ' '.join(message.content.split(' ')[1:])
       
       if (name == 'all'):
         for member in message.guild.members:
